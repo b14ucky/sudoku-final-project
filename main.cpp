@@ -5,13 +5,13 @@
 
 #include "board.h"
 #include "validate.h"
+#include "game.h"
 
 using namespace std;
 
 int main()
 {
     srand(time(NULL));
-    Board board;
-    board.printBoard();
-    system("pause");
+    Game game;
+    game.runGame();
 }

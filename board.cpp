@@ -10,11 +10,6 @@ using namespace std;
 Functions functions;
 Validate validate;
 
-Board::Board()
-{
-    generateBoard();
-}
-
 void Board::printBoard()
 {
     cout << "   A.  B.  C.  D.  E.  F.  G.  H.  I." << endl;
@@ -57,6 +52,7 @@ void Board::fillDiagonal()
                 {
                     board[j][k] = rand() % 9 + 1;
                 } while (!validate.checkSquare(board, i, i));
+                solvedBoard[j][k] = board[j][k];
             }
         }
     }
@@ -106,6 +102,7 @@ bool Board::fillRemaining(int i, int j)
         {
             if (fillRemaining(i, j + 1))
             {
+                solvedBoard[i][j] = num;
                 return true;
             }
         }
@@ -117,10 +114,11 @@ bool Board::fillRemaining(int i, int j)
 void Board::removeFields()
 {
     int count = 0;
-    while (count < 40)
+    while (count < 35)
     {
-        int row = rand() % 9;
-        int column = rand() % 9;
+        int cellId = rand() % 81;
+        int row = cellId / 9;
+        int column = cellId % 9;
         if (board[row][column] != 0)
         {
             count++;
@@ -137,4 +135,47 @@ void Board::generateBoard()
     fillRemaining(0, 3);
     // remove some fields from the board to make it playable
     removeFields();
+}
+
+// -2: invalid input, -1: can't update existing field, 0: incorrect, 1: correct
+int Board::updateBoard(int row, char column, int value)
+{
+    column = functions.columnSymbolToColumnNumber(column);
+    row = row - 1;
+
+    if (row < 0 || row > 8 || column < 0 || value < 1 || value > 9)
+    {
+        return -2;
+    }
+    if (board[row][column] != 0)
+    {
+        return -1;
+    }
+
+    board[row][column] = value;
+
+    if (board[row][column] == solvedBoard[row][column])
+    {
+        return 1;
+    }
+    else
+    {
+        board[row][column] = 0;
+        return 0;
+    }
+}
+
+bool Board::checkIfBoardIsFilled()
+{
+    for (int i = 0; i < 9; i++)
+    {
+        for (int j = 0; j < 9; j++)
+        {
+            if (board[i][j] == 0)
+            {
+                return false;
+            }
+        }
+    }
+    return true;
 }
