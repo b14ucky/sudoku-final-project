@@ -33,3 +33,7 @@
 
 # vs code
 .vscode
+
+# .pdb and .ilk files
+.pdb
+.ilk
