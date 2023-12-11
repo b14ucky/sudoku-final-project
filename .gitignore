@@ -35,5 +35,5 @@
 .vscode
 
 # .pdb and .ilk files
-.pdb
-.ilk
+*.pdb
+*.ilk
