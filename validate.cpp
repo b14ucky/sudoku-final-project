@@ -4,49 +4,70 @@ bool Validate::checkBoard(int board[9][9])
 {
     for (int i = 0; i < 9; i++)
     {
-        int spottedRows[10]{};
-        int spottedColumns[10]{};
-        for (int j = 0; j < 9; j++)
+        if (!checkRow(board, i))
+            return false;
+        if (!checkColumn(board, i))
+            return false;
+        if (i % 3 == 0)
         {
-            if (board[i][j] != 0 && spottedRows[board[i][j]] == 0)
+            for (int j = 0; j < 9; j += 3)
             {
-                spottedRows[board[i][j]] = 1;
-            }
-            else if (board[i][j] != 0 && spottedRows[board[i][j]] == 1)
-            {
-                return false;
-            }
-        }
-        for (int j = 0; j < 9; j++)
-        {
-            if (board[j][i] != 0 && spottedColumns[board[j][i]] == 0)
-            {
-                spottedColumns[board[j][i]] = 1;
-            }
-            else if (board[j][i] != 0 && spottedColumns[board[j][i]] == 1)
-            {
-                return false;
+                if (!checkSquare(board, i, j))
+                    return false;
             }
         }
     }
-    for (int i = 0; i < 9; i += 3)
+    return true;
+}
+
+bool Validate::checkRow(int board[9][9], int row)
+{
+    int spottedRows[10]{};
+    for (int i = 0; i < 9; i++)
     {
-        for (int j = 0; j < 9; j += 3)
+        if (board[row][i] != 0 && spottedRows[board[row][i]] == 0)
         {
-            int spottedSquare[10]{};
-            for (int k = i; k < i + 3; k++)
+            spottedRows[board[row][i]] = 1;
+        }
+        else if (board[row][i] != 0 && spottedRows[board[row][i]] == 1)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool Validate::checkColumn(int board[9][9], int column)
+{
+    int spottedColumns[10]{};
+    for (int i = 0; i < 9; i++)
+    {
+        if (board[i][column] != 0 && spottedColumns[board[i][column]] == 0)
+        {
+            spottedColumns[board[i][column]] = 1;
+        }
+        else if (board[i][column] != 0 && spottedColumns[board[i][column]] == 1)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool Validate::checkSquare(int board[9][9], int row, int column)
+{
+    int spottedSquare[10]{};
+    for (int i = row; i < row + 3; i++)
+    {
+        for (int j = column; j < column + 3; j++)
+        {
+            if (board[i][j] != 0 && spottedSquare[board[i][j]] == 0)
             {
-                for (int l = j; l < j + 3; l++)
-                {
-                    if (board[k][l] != 0 && spottedSquare[board[k][l]] == 0)
-                    {
-                        spottedSquare[board[k][l]] = 1;
-                    }
-                    else if (board[k][l] != 0 && spottedSquare[board[k][l]] == 1)
-                    {
-                        return false;
-                    }
-                }
+                spottedSquare[board[i][j]] = 1;
+            }
+            else if (board[i][j] != 0 && spottedSquare[board[i][j]] == 1)
+            {
+                return false;
             }
         }
     }
