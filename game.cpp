@@ -3,6 +3,7 @@
 
 #include "game.h"
 #include "board.h"
+#include "tests.h"
 
 using namespace std;
 
@@ -48,6 +49,7 @@ void Game::displayMenu()
         cout << "2. Rules" << endl;
         cout << "3. Credits" << endl;
         cout << "4. Exit" << endl;
+        cout << "5. Run tests" << endl;
         cout << "Enter your choice: ";
         int choice;
         cin >> choice;
@@ -86,6 +88,15 @@ void Game::displayMenu()
                 break;
             }
             exitMenu = true;
+            break;
+        }
+        case 5:
+        {
+            system("cls");
+            Tests tests;
+            tests.runAllTests();
+            system("pause");
+            system("cls");
             break;
         }
         default:
