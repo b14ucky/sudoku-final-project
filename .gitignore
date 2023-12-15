@@ -34,6 +34,7 @@
 
 # vs code
 .vscode
+.old
 
 # .pdb and .ilk files
 *.pdb
