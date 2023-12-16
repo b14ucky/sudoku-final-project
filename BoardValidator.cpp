@@ -1,26 +1,7 @@
-#include "validate.h"
+#include "BoardValidator.h"
 
-bool Validate::checkBoard(int board[9][9])
-{
-    for (int i = 0; i < 9; i++)
-    {
-        if (!checkRow(board, i))
-            return false;
-        if (!checkColumn(board, i))
-            return false;
-        if (i % 3 == 0)
-        {
-            for (int j = 0; j < 9; j += 3)
-            {
-                if (!checkSquare(board, i, j))
-                    return false;
-            }
-        }
-    }
-    return true;
-}
-
-bool Validate::checkRow(int board[9][9], int row)
+// private functions
+bool BoardValidator::checkRow(int board[9][9], int row)
 {
     int spottedRows[10]{};
     for (int i = 0; i < 9; i++)
@@ -37,7 +18,7 @@ bool Validate::checkRow(int board[9][9], int row)
     return true;
 }
 
-bool Validate::checkColumn(int board[9][9], int column)
+bool BoardValidator::checkColumn(int board[9][9], int column)
 {
     int spottedColumns[10]{};
     for (int i = 0; i < 9; i++)
@@ -54,7 +35,8 @@ bool Validate::checkColumn(int board[9][9], int column)
     return true;
 }
 
-bool Validate::checkSquare(int board[9][9], int row, int column)
+// public functions
+bool BoardValidator::checkSquare(int board[9][9], int row, int column)
 {
     int spottedSquare[10]{};
     for (int i = row; i < row + 3; i++)
@@ -68,6 +50,26 @@ bool Validate::checkSquare(int board[9][9], int row, int column)
             else if (board[i][j] != 0 && spottedSquare[board[i][j]] == 1)
             {
                 return false;
+            }
+        }
+    }
+    return true;
+}
+
+bool BoardValidator::checkBoard(int board[9][9])
+{
+    for (int i = 0; i < 9; i++)
+    {
+        if (!checkRow(board, i))
+            return false;
+        if (!checkColumn(board, i))
+            return false;
+        if (i % 3 == 0)
+        {
+            for (int j = 0; j < 9; j += 3)
+            {
+                if (!checkSquare(board, i, j))
+                    return false;
             }
         }
     }

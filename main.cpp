@@ -1,16 +1,20 @@
-#include <iostream>
-#include <iomanip>
-#include <cstdlib>
-#include <ctime>
-
-#include "board.h"
-#include "validate.h"
-#include "game.h"
+#include "Game.h"
 
 int main()
 {
-    srand(time(NULL));
+    // init srand
+    std::srand(static_cast<unsigned>(time(NULL)));
+
+    // init game engine
     Game game;
-    game.runGame();
-    return 0;
+
+    // game loop
+    while (game.running())
+    {
+        // update
+        game.update();
+
+        // render
+        game.render();
+    }
 }
