@@ -1,4 +1,5 @@
 #include "Board.h"
+#include <iostream>
 
 // private functions
 void Board::initBoard()
@@ -101,33 +102,43 @@ void Board::removeFields()
 Board::Board()
 {
     this->initBoard();
-}
-
-// functions
-void Board::renderBoard(sf::RenderWindow &window)
-{
-    sf::Font font;
-    font.loadFromFile("C:\\Windows\\Fonts\\arial.ttf");
-
     for (int i = 0; i < 9; i++)
     {
         for (int j = 0; j < 9; j++)
         {
-            sf::RectangleShape cell(sf::Vector2f(50, 50));
-            cell.setPosition(j * 50 + 50, i * 50 + 50);
-            cell.setOutlineThickness(1.f);
-            cell.setOutlineColor(sf::Color::Black);
-            cell.setFillColor(sf::Color::White);
+            std::cout << this->solution[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
+}
 
-            window.draw(cell);
+// functions
+void Board::renderBoard(sf::RenderWindow &window, sf::Font font, std::vector<sf::RectangleShape> cells)
+{
+    for (int i = 0; i < cells.size(); i++)
+    {
 
-            if (this->grid[i][j] != 0)
-            {
-                sf::Text text(std::to_string(this->grid[i][j]), font, 20);
-                text.setPosition(j * 50 + 65, i * 50 + 60);
-                text.setFillColor(sf::Color::Black);
-                window.draw(text);
-            }
+        window.draw(cells[i]);
+
+        int row = i / 9;
+        int column = i % 9;
+
+        if (this->grid[row][column] != 0)
+        {
+            sf::Text text(std::to_string(this->grid[row][column]), font, 20);
+            text.setPosition(column * 50 + 65, row * 50 + 160);
+            text.setFillColor(sf::Color::Black);
+            window.draw(text);
         }
     }
+}
+
+bool Board::updateBoard(int row, int column, int value)
+{
+    if (this->grid[row][column] == 0 && this->solution[row][column] == value)
+    {
+        this->grid[row][column] = value;
+        return true;
+    }
+    return false;
 }

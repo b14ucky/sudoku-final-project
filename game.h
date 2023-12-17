@@ -9,6 +9,8 @@
 
 #include <ctime>
 #include <iostream>
+#include <vector>
+#include <sstream>
 
 #include "Board.h"
 
@@ -23,9 +25,36 @@ private:
     sf::VideoMode videoMode;
     Board board;
 
+    // mouse positions
+    sf::Vector2i mousePosWindow;
+    sf::Vector2f mousePosView;
+
+    // fonts
+    sf::Font defaultFont;
+
+    // text
+    sf::Text mistakesText;
+
+    // game objects
+    std::vector<sf::RectangleShape> cells;
+    sf::RectangleShape cell;
+
+    // game logic
+    int selectedRow;
+    int selectedColumn;
+    int gridSize;
+    int cellSize;
+    int mistakes;
+
+    bool mouseHeld;
+    bool endGame;
+
     // private functions
     void initVariables();
     void initWindow();
+    void initFonts();
+    void initCells();
+    void initText();
 
 public:
     // constructors / destructors
@@ -34,10 +63,16 @@ public:
 
     // accessors
     const bool running() const;
+    const bool getEndGame() const;
 
     // functions
     void updateEvents();
+    void updateMousePositions();
+    void updateSelectedCell();
+    void updateCells();
+    void updateText();
     void update();
 
     void render();
+    void renderText();
 };
