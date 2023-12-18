@@ -42,12 +42,16 @@ private:
 
     // text
     sf::Text mistakesText;
+    sf::Text endGameText;
+    sf::Text playAgainText;
+    sf::Text quitText;
 
     // game objects
     std::vector<sf::RectangleShape> cells;
     sf::RectangleShape cell;
     std::vector<sf::RectangleShape> gridLines;
     sf::RectangleShape gridLine;
+    sf::RectangleShape endGameBackground;
 
     // game logic
     int selectedRow;
@@ -58,6 +62,7 @@ private:
 
     bool mouseHeld;
     bool endGame;
+    bool gameLost;
 
     // init functions
     void initVariables();
@@ -84,9 +89,11 @@ public:
     void updateSelectedCell();
     void updateCells();
     void updateText();
+    void updateEndGameMenu();
     void update();
 
     void render();
     void renderBackground();
     void renderGridLines();
+    void renderEndGameMenu();
 };

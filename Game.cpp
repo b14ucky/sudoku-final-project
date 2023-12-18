@@ -13,6 +13,7 @@ void Game::initVariables()
 
     this->mouseHeld = false;
     this->endGame = false;
+    this->gameLost = false;
 }
 
 void Game::initWindow()
@@ -208,6 +209,41 @@ void Game::updateText()
     this->mistakesText.setString(mistakesString.str());
 }
 
+void Game::updateEndGameMenu()
+{
+    if (this->playAgainText.getGlobalBounds().contains(this->mousePosView))
+    {
+        this->playAgainText.setFillColor(sf::Color(5, 5, 5));
+        this->playAgainText.setScale(1.1f, 1.1f);
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        {
+            this->endGame = false;
+            this->gameLost = false;
+            this->mistakes = 0;
+            this->board = Board();
+        }
+    }
+    else
+    {
+        this->playAgainText.setFillColor(sf::Color::Black);
+        this->playAgainText.setScale(1.f, 1.f);
+    }
+    if (this->quitText.getGlobalBounds().contains(this->mousePosView))
+    {
+        this->quitText.setFillColor(sf::Color(5, 5, 5));
+        this->quitText.setScale(1.1f, 1.1f);
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        {
+            this->window->close();
+        }
+    }
+    else
+    {
+        this->quitText.setFillColor(sf::Color::Black);
+        this->quitText.setScale(1.f, 1.f);
+    }
+}
+
 // render functions
 
 void Game::renderBackground()
@@ -223,16 +259,57 @@ void Game::renderGridLines()
     }
 }
 
+void Game::renderEndGameMenu()
+{
+    // set end game background
+    this->endGameBackground.setSize(sf::Vector2f(275.f, 400.f));
+    this->endGameBackground.setPosition(137.5, 175);
+    this->endGameBackground.setFillColor(sf::Color(255, 255, 255, 225));
+
+    // set end game text
+    if (this->gameLost)
+        this->endGameText.setString("You lost!");
+    else
+        this->endGameText.setString("You won!");
+    this->endGameText.setString("You lost!");
+    this->endGameText.setFont(this->lightFont);
+    this->endGameText.setCharacterSize(48);
+    this->endGameText.setFillColor(sf::Color::Black);
+    this->endGameText.setPosition((this->window->getSize().x - endGameText.getLocalBounds().width) / 2.f, 200);
+
+    // set play again text
+    this->playAgainText.setFont(this->regularFont);
+    this->playAgainText.setCharacterSize(28);
+    this->playAgainText.setString("Play again");
+    this->playAgainText.setOrigin(playAgainText.getLocalBounds().width / 2.f, playAgainText.getLocalBounds().height / 2.f);
+    this->playAgainText.setPosition(275, 350);
+    this->playAgainText.setFillColor(sf::Color::Black);
+
+    // set quit text
+    this->quitText.setFont(this->regularFont);
+    this->quitText.setCharacterSize(28);
+    this->quitText.setString("Quit");
+    this->quitText.setOrigin(quitText.getLocalBounds().width / 2.f, quitText.getLocalBounds().height / 2.f);
+    this->quitText.setPosition(275, 450);
+    this->quitText.setFillColor(sf::Color::Black);
+
+    // render end game menu
+    this->window->draw(this->endGameBackground);
+    this->window->draw(this->endGameText);
+    this->window->draw(this->playAgainText);
+    this->window->draw(this->quitText);
+}
+
 // main functions
 
 void Game::update()
 {
     this->updateEvents();
 
+    this->updateMousePositions();
+
     if (!this->endGame)
     {
-        this->updateMousePositions();
-
         this->updateSelectedCell();
 
         this->updateCells();
@@ -243,6 +320,12 @@ void Game::update()
     if (this->mistakes >= 3)
     {
         this->endGame = true;
+        this->gameLost = true;
+    }
+
+    if (this->getEndGame())
+    {
+        this->updateEndGameMenu();
     }
 }
 
@@ -260,6 +343,12 @@ void Game::render()
     this->renderGridLines();
 
     this->window->draw(this->mistakesText);
+
+    if (this->getEndGame())
+    {
+
+        this->renderEndGameMenu();
+    }
 
     // display frame in window
     this->window->display();
