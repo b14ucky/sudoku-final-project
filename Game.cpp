@@ -271,7 +271,6 @@ void Game::renderEndGameMenu()
         this->endGameText.setString("You lost!");
     else
         this->endGameText.setString("You won!");
-    this->endGameText.setString("You lost!");
     this->endGameText.setFont(this->lightFont);
     this->endGameText.setCharacterSize(48);
     this->endGameText.setFillColor(sf::Color::Black);
