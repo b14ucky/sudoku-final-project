@@ -36,12 +36,18 @@ private:
     // icons
     sf::Image icon;
 
+    // background
+    sf::Texture backgroundTexture;
+    sf::Sprite background;
+
     // text
     sf::Text mistakesText;
 
     // game objects
     std::vector<sf::RectangleShape> cells;
     sf::RectangleShape cell;
+    std::vector<sf::RectangleShape> gridLines;
+    sf::RectangleShape gridLine;
 
     // game logic
     int selectedRow;
@@ -53,13 +59,15 @@ private:
     bool mouseHeld;
     bool endGame;
 
-    // private functions
+    // init functions
     void initVariables();
     void initWindow();
     void initFonts();
     void initCells();
     void initText();
     void initIcon();
+    void initImages();
+    void initGridLines();
 
 public:
     // constructors / destructors
@@ -79,5 +87,6 @@ public:
     void update();
 
     void render();
-    void renderText();
+    void renderBackground();
+    void renderGridLines();
 };

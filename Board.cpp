@@ -142,3 +142,18 @@ bool Board::updateBoard(int row, int column, int value)
     }
     return false;
 }
+
+bool Board::isFilled()
+{
+    for (int i = 0; i < 9; i++)
+    {
+        for (int j = 0; j < 9; j++)
+        {
+            if (this->grid[i][j] == 0)
+            {
+                return false;
+            }
+        }
+    }
+    return true;
+}

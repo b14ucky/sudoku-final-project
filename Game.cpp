@@ -1,6 +1,6 @@
 #include "Game.h"
 
-// private functions
+// init functions
 void Game::initVariables()
 {
     this->window = nullptr;
@@ -57,7 +57,7 @@ void Game::initText()
     this->mistakesText.setFont(this->lightFont);
     this->mistakesText.setPosition(50, 100);
     this->mistakesText.setCharacterSize(28);
-    this->mistakesText.setFillColor(sf::Color::Black);
+    this->mistakesText.setFillColor(sf::Color(200, 200, 200));
     this->mistakesText.setString("NONE");
 }
 
@@ -70,6 +70,31 @@ void Game::initIcon()
     this->window->setIcon(this->icon.getSize().x, this->icon.getSize().y, this->icon.getPixelsPtr());
 }
 
+void Game::initImages()
+{
+    if (!this->backgroundTexture.loadFromFile("./assets/images/background.png"))
+    {
+        std::cout << "ERROR::GAME::INITIMAGES::Failed to load background!" << std::endl;
+    }
+    this->background.setTexture(this->backgroundTexture);
+}
+
+void Game::initGridLines()
+{
+    this->gridLine.setFillColor(sf::Color::Black);
+    this->gridLine.setSize(sf::Vector2f(2.f, 450.f));
+    this->gridLine.setPosition(200, 150);
+    this->gridLines.push_back(gridLine);
+    this->gridLine.setPosition(350, 150);
+    this->gridLines.push_back(gridLine);
+    this->gridLine.setSize(sf::Vector2f(450.f, 2.f));
+    this->gridLine.setPosition(50, 300);
+    this->gridLines.push_back(gridLine);
+    this->gridLine.setPosition(50, 450);
+    this->gridLines.push_back(gridLine);
+}
+
+// constructors / destructors
 Game::Game()
 {
     this->initVariables();
@@ -78,6 +103,8 @@ Game::Game()
     this->initCells();
     this->initText();
     this->initIcon();
+    this->initImages();
+    this->initGridLines();
 }
 
 Game::~Game()
@@ -96,7 +123,7 @@ const bool Game::getEndGame() const
     return this->endGame;
 }
 
-// functions
+// update functions
 void Game::updateEvents()
 {
     while (this->window->pollEvent(this->event))
@@ -112,6 +139,10 @@ void Game::updateEvents()
                 int value = event.text.unicode - '0';
                 if (!this->board.updateBoard(this->selectedRow, this->selectedColumn, value))
                     this->mistakes += 1;
+            }
+            if (this->board.isFilled())
+            {
+                this->endGame = true;
             }
             break;
         }
@@ -138,6 +169,12 @@ void Game::updateSelectedCell()
                 {
                     this->selectedRow = i / this->gridSize;
                     this->selectedColumn = i % this->gridSize;
+                    break;
+                }
+                else
+                {
+                    this->selectedRow = -1;
+                    this->selectedColumn = -1;
                 }
             }
         }
@@ -155,11 +192,11 @@ void Game::updateCells()
         int selectedCell = this->selectedRow * this->gridSize + this->selectedColumn;
         if (i == selectedCell)
         {
-            this->cells[i].setFillColor(sf::Color(200, 200, 200));
+            this->cells[i].setFillColor(sf::Color(200, 200, 200, 128));
         }
         else
         {
-            this->cells[i].setFillColor(sf::Color::White);
+            this->cells[i].setFillColor(sf::Color(255, 255, 255, 128));
         }
     }
 }
@@ -170,6 +207,23 @@ void Game::updateText()
     mistakesString << "Mistakes: " << this->mistakes;
     this->mistakesText.setString(mistakesString.str());
 }
+
+// render functions
+
+void Game::renderBackground()
+{
+    this->window->draw(this->background);
+}
+
+void Game::renderGridLines()
+{
+    for (auto &gridLine : this->gridLines)
+    {
+        this->window->draw(gridLine);
+    }
+}
+
+// main functions
 
 void Game::update()
 {
@@ -197,8 +251,13 @@ void Game::render()
     // clear old frame
     this->window->clear(sf::Color::White);
 
+    // render background
+    this->renderBackground();
+
     // render items
     this->board.renderBoard(*this->window, this->regularFont, this->cells);
+
+    this->renderGridLines();
 
     this->window->draw(this->mistakesText);
 

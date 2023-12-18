@@ -24,4 +24,5 @@ public:
     // functions
     void renderBoard(sf::RenderWindow &window, sf::Font font, std::vector<sf::RectangleShape> cells);
     bool updateBoard(int row, int column, int value);
+    bool isFilled();
 };
