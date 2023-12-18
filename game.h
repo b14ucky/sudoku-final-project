@@ -11,6 +11,7 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
+#include <iomanip>
 
 #include "Board.h"
 
@@ -42,6 +43,7 @@ private:
 
     // text
     sf::Text mistakesText;
+    sf::Text timerText;
     sf::Text endGameText;
     sf::Text playAgainText;
     sf::Text quitText;
@@ -63,6 +65,9 @@ private:
     bool mouseHeld;
     bool endGame;
     bool gameLost;
+
+    sf::Clock clock;
+    sf::Time elapsedTime;
 
     // init functions
     void initVariables();
@@ -90,9 +95,11 @@ public:
     void updateCells();
     void updateText();
     void updateEndGameMenu();
+    void updateTimer();
     void update();
 
     void render();
+    void renderText();
     void renderBackground();
     void renderGridLines();
     void renderEndGameMenu();

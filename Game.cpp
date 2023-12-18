@@ -14,6 +14,8 @@ void Game::initVariables()
     this->mouseHeld = false;
     this->endGame = false;
     this->gameLost = false;
+
+    this->clock.restart();
 }
 
 void Game::initWindow()
@@ -60,6 +62,31 @@ void Game::initText()
     this->mistakesText.setCharacterSize(28);
     this->mistakesText.setFillColor(sf::Color(200, 200, 200));
     this->mistakesText.setString("NONE");
+
+    this->timerText.setFont(this->lightFont);
+    this->timerText.setPosition(365, 100);
+    this->timerText.setCharacterSize(28);
+    this->timerText.setFillColor(sf::Color(200, 200, 200));
+    this->timerText.setString("NONE");
+    this->timerText.setPosition(365, 100);
+
+    this->endGameText.setFont(this->lightFont);
+    this->endGameText.setCharacterSize(48);
+    this->endGameText.setFillColor(sf::Color::Black);
+
+    this->playAgainText.setFont(this->regularFont);
+    this->playAgainText.setCharacterSize(28);
+    this->playAgainText.setString("Play again");
+    this->playAgainText.setOrigin(playAgainText.getLocalBounds().width / 2.f, playAgainText.getLocalBounds().height / 2.f);
+    this->playAgainText.setPosition(275, 350);
+    this->playAgainText.setFillColor(sf::Color::Black);
+
+    this->quitText.setFont(this->regularFont);
+    this->quitText.setCharacterSize(28);
+    this->quitText.setString("Quit");
+    this->quitText.setOrigin(quitText.getLocalBounds().width / 2.f, quitText.getLocalBounds().height / 2.f);
+    this->quitText.setPosition(275, 450);
+    this->quitText.setFillColor(sf::Color::Black);
 }
 
 void Game::initIcon()
@@ -207,6 +234,15 @@ void Game::updateText()
     std::stringstream mistakesString;
     mistakesString << "Mistakes: " << this->mistakes;
     this->mistakesText.setString(mistakesString.str());
+
+    this->elapsedTime = this->clock.getElapsedTime();
+    int totalSeconds = static_cast<int>(this->elapsedTime.asSeconds());
+    int minutes = totalSeconds / 60;
+    int seconds = totalSeconds % 60;
+
+    std::stringstream timeString;
+    timeString << "Time: " << std::setfill('0') << std::setw(2) << minutes << ":" << std::setfill('0') << std::setw(2) << seconds;
+    this->timerText.setString(timeString.str());
 }
 
 void Game::updateEndGameMenu()
@@ -221,6 +257,7 @@ void Game::updateEndGameMenu()
             this->gameLost = false;
             this->mistakes = 0;
             this->board = Board();
+            this->clock.restart();
         }
     }
     else
@@ -245,6 +282,11 @@ void Game::updateEndGameMenu()
 }
 
 // render functions
+void Game::renderText()
+{
+    this->window->draw(this->mistakesText);
+    this->window->draw(this->timerText);
+}
 
 void Game::renderBackground()
 {
@@ -266,31 +308,14 @@ void Game::renderEndGameMenu()
     this->endGameBackground.setPosition(137.5, 175);
     this->endGameBackground.setFillColor(sf::Color(255, 255, 255, 225));
 
-    // set end game text
+    // set end game text position
+    this->endGameText.setPosition((this->window->getSize().x - endGameText.getLocalBounds().width) / 2.f, 200);
+
+    // set end game text string
     if (this->gameLost)
         this->endGameText.setString("You lost!");
     else
         this->endGameText.setString("You won!");
-    this->endGameText.setFont(this->lightFont);
-    this->endGameText.setCharacterSize(48);
-    this->endGameText.setFillColor(sf::Color::Black);
-    this->endGameText.setPosition((this->window->getSize().x - endGameText.getLocalBounds().width) / 2.f, 200);
-
-    // set play again text
-    this->playAgainText.setFont(this->regularFont);
-    this->playAgainText.setCharacterSize(28);
-    this->playAgainText.setString("Play again");
-    this->playAgainText.setOrigin(playAgainText.getLocalBounds().width / 2.f, playAgainText.getLocalBounds().height / 2.f);
-    this->playAgainText.setPosition(275, 350);
-    this->playAgainText.setFillColor(sf::Color::Black);
-
-    // set quit text
-    this->quitText.setFont(this->regularFont);
-    this->quitText.setCharacterSize(28);
-    this->quitText.setString("Quit");
-    this->quitText.setOrigin(quitText.getLocalBounds().width / 2.f, quitText.getLocalBounds().height / 2.f);
-    this->quitText.setPosition(275, 450);
-    this->quitText.setFillColor(sf::Color::Black);
 
     // render end game menu
     this->window->draw(this->endGameBackground);
@@ -341,7 +366,7 @@ void Game::render()
 
     this->renderGridLines();
 
-    this->window->draw(this->mistakesText);
+    this->renderText();
 
     if (this->getEndGame())
     {
