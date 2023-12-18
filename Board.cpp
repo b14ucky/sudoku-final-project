@@ -125,8 +125,8 @@ void Board::renderBoard(sf::RenderWindow &window, sf::Font font, std::vector<sf:
 
         if (this->grid[row][column] != 0)
         {
-            sf::Text text(std::to_string(this->grid[row][column]), font, 20);
-            text.setPosition(column * 50 + 65, row * 50 + 160);
+            sf::Text text(std::to_string(this->grid[row][column]), font, 24);
+            text.setPosition(column * 50 + 67.5, row * 50 + 160);
             text.setFillColor(sf::Color::Black);
             window.draw(text);
         }

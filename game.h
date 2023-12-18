@@ -30,7 +30,11 @@ private:
     sf::Vector2f mousePosView;
 
     // fonts
-    sf::Font defaultFont;
+    sf::Font lightFont;
+    sf::Font regularFont;
+
+    // icons
+    sf::Image icon;
 
     // text
     sf::Text mistakesText;
@@ -55,6 +59,7 @@ private:
     void initFonts();
     void initCells();
     void initText();
+    void initIcon();
 
 public:
     // constructors / destructors

@@ -26,9 +26,13 @@ void Game::initWindow()
 
 void Game::initFonts()
 {
-    if (!this->defaultFont.loadFromFile("C:/Windows/Fonts/arial.ttf"))
+    if (!this->lightFont.loadFromFile("./assets/fonts/Cairo-ExtraLight.ttf"))
     {
-        std::cout << "ERROR::GAME::INITFONTS::Failed to load font!" << std::endl;
+        std::cout << "ERROR::GAME::INITFONTS::Failed to load light font!" << std::endl;
+    }
+    if (!this->regularFont.loadFromFile("./assets/fonts/Cairo-Regular.ttf"))
+    {
+        std::cout << "ERROR::GAME::INITFONTS::Failed to load medium font!" << std::endl;
     }
 }
 
@@ -50,11 +54,20 @@ void Game::initCells()
 
 void Game::initText()
 {
-    this->mistakesText.setFont(this->defaultFont);
+    this->mistakesText.setFont(this->lightFont);
     this->mistakesText.setPosition(50, 100);
-    this->mistakesText.setCharacterSize(24);
+    this->mistakesText.setCharacterSize(28);
     this->mistakesText.setFillColor(sf::Color::Black);
     this->mistakesText.setString("NONE");
+}
+
+void Game::initIcon()
+{
+    if (!this->icon.loadFromFile("./assets/icons/icon.png"))
+    {
+        std::cout << "ERROR::GAME::INITICON::Failed to load icon!" << std::endl;
+    }
+    this->window->setIcon(this->icon.getSize().x, this->icon.getSize().y, this->icon.getPixelsPtr());
 }
 
 Game::Game()
@@ -64,6 +77,7 @@ Game::Game()
     this->initFonts();
     this->initCells();
     this->initText();
+    this->initIcon();
 }
 
 Game::~Game()
@@ -99,7 +113,6 @@ void Game::updateEvents()
                 if (!this->board.updateBoard(this->selectedRow, this->selectedColumn, value))
                     this->mistakes += 1;
             }
-            std::cout << "Mistakes: " << this->mistakes << std::endl;
             break;
         }
     }
@@ -185,7 +198,7 @@ void Game::render()
     this->window->clear(sf::Color::White);
 
     // render items
-    this->board.renderBoard(*this->window, this->defaultFont, this->cells);
+    this->board.renderBoard(*this->window, this->regularFont, this->cells);
 
     this->window->draw(this->mistakesText);
 
