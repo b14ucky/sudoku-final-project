@@ -14,6 +14,7 @@
 #include <iomanip>
 
 #include "Board.h"
+#include "Menu.h"
 
 // game engine class
 
@@ -25,6 +26,7 @@ private:
     sf::Event event;
     sf::VideoMode videoMode;
     Board board;
+    Menu menu;
 
     // mouse positions
     sf::Vector2i mousePosWindow;
@@ -46,7 +48,7 @@ private:
     sf::Text timerText;
     sf::Text endGameText;
     sf::Text playAgainText;
-    sf::Text quitText;
+    sf::Text mainMenuText;
 
     // game objects
     std::vector<sf::RectangleShape> cells;
@@ -95,7 +97,6 @@ public:
     void updateCells();
     void updateText();
     void updateEndGameMenu();
-    void updateTimer();
     void update();
 
     void render();

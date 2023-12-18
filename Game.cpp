@@ -81,12 +81,12 @@ void Game::initText()
     this->playAgainText.setPosition(275, 350);
     this->playAgainText.setFillColor(sf::Color::Black);
 
-    this->quitText.setFont(this->regularFont);
-    this->quitText.setCharacterSize(28);
-    this->quitText.setString("Quit");
-    this->quitText.setOrigin(quitText.getLocalBounds().width / 2.f, quitText.getLocalBounds().height / 2.f);
-    this->quitText.setPosition(275, 450);
-    this->quitText.setFillColor(sf::Color::Black);
+    this->mainMenuText.setFont(this->regularFont);
+    this->mainMenuText.setCharacterSize(28);
+    this->mainMenuText.setString("Main menu");
+    this->mainMenuText.setOrigin(mainMenuText.getLocalBounds().width / 2.f, mainMenuText.getLocalBounds().height / 2.f);
+    this->mainMenuText.setPosition(275, 450);
+    this->mainMenuText.setFillColor(sf::Color::Black);
 }
 
 void Game::initIcon()
@@ -265,19 +265,24 @@ void Game::updateEndGameMenu()
         this->playAgainText.setFillColor(sf::Color::Black);
         this->playAgainText.setScale(1.f, 1.f);
     }
-    if (this->quitText.getGlobalBounds().contains(this->mousePosView))
+    if (this->mainMenuText.getGlobalBounds().contains(this->mousePosView))
     {
-        this->quitText.setFillColor(sf::Color(5, 5, 5));
-        this->quitText.setScale(1.1f, 1.1f);
+        this->mainMenuText.setFillColor(sf::Color(5, 5, 5));
+        this->mainMenuText.setScale(1.1f, 1.1f);
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {
-            this->window->close();
+            this->endGame = false;
+            this->gameLost = false;
+            this->mistakes = 0;
+            this->board = Board();
+            this->clock.restart();
+            this->menu.currentState = Menu::MenuState::MainMenu;
         }
     }
     else
     {
-        this->quitText.setFillColor(sf::Color::Black);
-        this->quitText.setScale(1.f, 1.f);
+        this->mainMenuText.setFillColor(sf::Color::Black);
+        this->mainMenuText.setScale(1.f, 1.f);
     }
 }
 
@@ -321,7 +326,7 @@ void Game::renderEndGameMenu()
     this->window->draw(this->endGameBackground);
     this->window->draw(this->endGameText);
     this->window->draw(this->playAgainText);
-    this->window->draw(this->quitText);
+    this->window->draw(this->mainMenuText);
 }
 
 // main functions
@@ -332,24 +337,38 @@ void Game::update()
 
     this->updateMousePositions();
 
-    if (!this->endGame)
+    switch (this->menu.currentState)
     {
-        this->updateSelectedCell();
+    case Menu::MenuState::MainMenu:
+        this->menu.updateMainMenu(this->mousePosView);
+        break;
+    case Menu::MenuState::PlayGame:
+        if (!this->endGame)
+        {
+            this->updateSelectedCell();
 
-        this->updateCells();
+            this->updateCells();
 
-        this->updateText();
-    }
+            this->updateText();
+        }
 
-    if (this->mistakes >= 3)
-    {
-        this->endGame = true;
-        this->gameLost = true;
-    }
+        if (this->mistakes >= 3)
+        {
+            this->endGame = true;
+            this->gameLost = true;
+        }
 
-    if (this->getEndGame())
-    {
-        this->updateEndGameMenu();
+        if (this->getEndGame())
+        {
+            this->updateEndGameMenu();
+        }
+        break;
+    case Menu::MenuState::HowToPlay:
+        this->menu.updateHowToPlay(this->mousePosView);
+        break;
+    case Menu::MenuState::Quit:
+        this->window->close();
+        break;
     }
 }
 
@@ -361,18 +380,33 @@ void Game::render()
     // render background
     this->renderBackground();
 
-    // render items
-    this->board.renderBoard(*this->window, this->regularFont, this->cells);
-
-    this->renderGridLines();
-
-    this->renderText();
-
-    if (this->getEndGame())
+    switch (this->menu.currentState)
     {
+    case Menu::MenuState::MainMenu:
+        this->menu.renderMainMenu(*this->window, this->regularFont);
+        break;
+    case Menu::MenuState::PlayGame:
+        this->board.renderBoard(*this->window, this->regularFont, this->cells);
 
-        this->renderEndGameMenu();
+        this->renderGridLines();
+
+        this->renderText();
+
+        if (this->getEndGame())
+        {
+
+            this->renderEndGameMenu();
+        }
+        break;
+    case Menu::MenuState::HowToPlay:
+        this->menu.renderHowToPlay(*this->window, this->regularFont);
+        break;
+        // case Menu::MenuState::Credits:
+        //     this->menu.renderCredits(*this->window, this->regularFont);
+        //     break;
     }
+
+    // render items
 
     // display frame in window
     this->window->display();
