@@ -11,6 +11,7 @@ void Game::initVariables()
     this->cellSize = 50;
     this->mistakes = 0;
 
+    this->madeMistake = false;
     this->mouseHeld = false;
     this->endGame = false;
     this->gameLost = false;
@@ -171,7 +172,14 @@ void Game::updateEvents()
             {
                 int value = event.text.unicode - '0';
                 if (!this->board.updateBoard(this->selectedRow, this->selectedColumn, value))
+                {
+                    this->madeMistake = true;
                     this->mistakes += 1;
+                }
+                else
+                {
+                    this->madeMistake = false;
+                }
             }
             if (this->board.isFilled())
             {
@@ -194,6 +202,10 @@ void Game::updateSelectedCell()
     {
         if (this->mouseHeld == false)
         {
+            if (this->madeMistake)
+            {
+                this->madeMistake = false;
+            }
             this->mouseHeld = true;
 
             for (int i = 0; i < gridSize * gridSize; i++)
@@ -224,21 +236,28 @@ void Game::updateCells()
     {
         for (int j = 0; j < this->gridSize; j++)
         {
+            int currentCell = i * this->gridSize + j;
             if ((i == this->selectedRow && j == this->selectedColumn) || (this->board.getFieldValue(i, j) != 0 && this->board.getFieldValue(i, j) == this->board.getFieldValue(this->selectedRow, this->selectedColumn)))
             {
-                this->cells[i * this->gridSize + j].setFillColor(sf::Color(200, 200, 200, 128));
+                this->cells[currentCell].setFillColor(sf::Color(200, 200, 200, 128));
             }
             else if (i == this->selectedRow)
             {
-                this->cells[i * this->gridSize + j].setFillColor(sf::Color(235, 235, 235, 128));
+                this->cells[currentCell].setFillColor(sf::Color(235, 235, 235, 128));
             }
             else if (j == this->selectedColumn)
             {
-                this->cells[i * this->gridSize + j].setFillColor(sf::Color(235, 235, 235, 128));
+                this->cells[currentCell].setFillColor(sf::Color(235, 235, 235, 128));
             }
             else
             {
-                this->cells[i * this->gridSize + j].setFillColor(sf::Color(255, 255, 255, 128));
+                this->cells[currentCell].setFillColor(sf::Color(255, 255, 255, 128));
+            }
+
+            if (this->madeMistake)
+            {
+                int mistakenCell = this->selectedRow * this->gridSize + this->selectedColumn;
+                this->cells[mistakenCell].setFillColor(sf::Color(255, 51, 51, 128));
             }
         }
     }

@@ -65,6 +65,7 @@ private:
     int cellSize;
     int mistakes;
 
+    bool madeMistake;
     bool mouseHeld;
     bool endGame;
     bool gameLost;
