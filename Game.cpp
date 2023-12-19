@@ -220,18 +220,40 @@ void Game::updateSelectedCell()
 
 void Game::updateCells()
 {
-    for (int i = 0; i < gridSize * gridSize; i++)
+    for (int i = 0; i < this->gridSize; i++)
     {
-        int selectedCell = this->selectedRow * this->gridSize + this->selectedColumn;
-        if (i == selectedCell)
+        for (int j = 0; j < this->gridSize; j++)
         {
-            this->cells[i].setFillColor(sf::Color(200, 200, 200, 128));
-        }
-        else
-        {
-            this->cells[i].setFillColor(sf::Color(255, 255, 255, 128));
+            if (i == this->selectedRow && j == this->selectedColumn)
+            {
+                this->cells[i * this->gridSize + j].setFillColor(sf::Color(200, 200, 200, 128));
+            }
+            else if (i == this->selectedRow)
+            {
+                this->cells[i * this->gridSize + j].setFillColor(sf::Color(235, 235, 235, 128));
+            }
+            else if (j == this->selectedColumn)
+            {
+                this->cells[i * this->gridSize + j].setFillColor(sf::Color(235, 235, 235, 128));
+            }
+            else
+            {
+                this->cells[i * this->gridSize + j].setFillColor(sf::Color(255, 255, 255, 128));
+            }
         }
     }
+    // for (int i = 0; i < this->gridSize * this->gridSize; i++)
+    // {
+    //     int selectedCell = this->selectedRow * this->gridSize + this->selectedColumn;
+    //     if (i == selectedCell)
+    //     {
+    //         this->cells[i].setFillColor(sf::Color(200, 200, 200, 128));
+    //     }
+    //     else
+    //     {
+    //         this->cells[i].setFillColor(sf::Color(255, 255, 255, 128));
+    //     }
+    // }
 }
 
 void Game::updateText()
