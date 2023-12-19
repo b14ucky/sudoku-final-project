@@ -23,7 +23,5 @@ This project is the final assignment for the programming laboratories at the Sil
 
 ### Installation
 
-```bash
-git clone https://github.com/b14ucky/sudoku-final-project.git
-cd sudoku-final-project
-```
+- Go to **Releases**, select the latest release and download its source code along with sudoku.exe.
+- Extract .zip file and place sudoku.exe and assets in the same directory.
