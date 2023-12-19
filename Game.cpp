@@ -85,6 +85,13 @@ void Game::initText()
     this->mainMenuText.setOrigin(mainMenuText.getLocalBounds().width / 2.f, mainMenuText.getLocalBounds().height / 2.f);
     this->mainMenuText.setPosition(275, 450);
     this->mainMenuText.setFillColor(sf::Color::Black);
+
+    this->goBackText.setFont(this->regularFont);
+    this->goBackText.setCharacterSize(28);
+    this->goBackText.setString("Click here to go back to main menu");
+    this->goBackText.setOrigin(goBackText.getLocalBounds().width / 2.f, goBackText.getLocalBounds().height / 2.f);
+    this->goBackText.setPosition(275, 750);
+    this->goBackText.setFillColor(sf::Color(200, 200, 200));
 }
 
 void Game::initIcon()
@@ -241,6 +248,25 @@ void Game::updateText()
     std::stringstream timeString;
     timeString << "Time: " << std::setfill('0') << std::setw(2) << minutes << ":" << std::setfill('0') << std::setw(2) << seconds;
     this->timerText.setString(timeString.str());
+
+    if (this->goBackText.getGlobalBounds().contains(this->mousePosView))
+    {
+        this->goBackText.setScale(1.1f, 1.1f);
+
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        {
+            this->mouseHeld = true;
+            this->endGame = false;
+            this->gameLost = false;
+            this->mistakes = 0;
+            this->board = Board();
+            this->menu.currentState = Menu::MenuState::MainMenu;
+        }
+    }
+    else
+    {
+        this->goBackText.setScale(1.f, 1.f);
+    }
 }
 
 void Game::updateEndGameMenu()
@@ -289,6 +315,7 @@ void Game::renderText()
 {
     this->window->draw(this->mistakesText);
     this->window->draw(this->timerText);
+    this->window->draw(this->goBackText);
 }
 
 void Game::renderBackground()

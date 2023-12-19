@@ -49,6 +49,7 @@ private:
     sf::Text endGameText;
     sf::Text playAgainText;
     sf::Text mainMenuText;
+    sf::Text goBackText;
 
     // game objects
     std::vector<sf::RectangleShape> cells;
