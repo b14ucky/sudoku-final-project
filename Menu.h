@@ -17,6 +17,7 @@ private:
     sf::Text quitText;
     sf::Text goBackText;
     sf::Text howToPlayInfoText;
+    sf::Text creditsInfoText;
 
     void initVariables();
     void initText();
@@ -38,6 +39,7 @@ public:
 
     void updateMainMenu(sf::Vector2f mousePosView);
     void updateHowToPlay(sf::Vector2f mousePosView);
+    void updateCredits(sf::Vector2f mousePosView);
 
     void renderMainMenu(sf::RenderWindow &window, sf::Font &font);
     void renderHowToPlay(sf::RenderWindow &window, sf::Font &font);

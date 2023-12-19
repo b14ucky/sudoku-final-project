@@ -14,8 +14,6 @@ void Game::initVariables()
     this->mouseHeld = false;
     this->endGame = false;
     this->gameLost = false;
-
-    this->clock.restart();
 }
 
 void Game::initWindow()
@@ -340,6 +338,7 @@ void Game::update()
     switch (this->menu.currentState)
     {
     case Menu::MenuState::MainMenu:
+        this->clock.restart();
         this->menu.updateMainMenu(this->mousePosView);
         break;
     case Menu::MenuState::PlayGame:
@@ -352,7 +351,7 @@ void Game::update()
             this->updateText();
         }
 
-        if (this->mistakes >= 3)
+        if (this->mistakes >= 3 || this->elapsedTime.asSeconds() > 3599)
         {
             this->endGame = true;
             this->gameLost = true;
@@ -365,6 +364,9 @@ void Game::update()
         break;
     case Menu::MenuState::HowToPlay:
         this->menu.updateHowToPlay(this->mousePosView);
+        break;
+    case Menu::MenuState::Credits:
+        this->menu.updateCredits(this->mousePosView);
         break;
     case Menu::MenuState::Quit:
         this->window->close();
@@ -380,6 +382,7 @@ void Game::render()
     // render background
     this->renderBackground();
 
+    // render items
     switch (this->menu.currentState)
     {
     case Menu::MenuState::MainMenu:
@@ -401,12 +404,10 @@ void Game::render()
     case Menu::MenuState::HowToPlay:
         this->menu.renderHowToPlay(*this->window, this->regularFont);
         break;
-        // case Menu::MenuState::Credits:
-        //     this->menu.renderCredits(*this->window, this->regularFont);
-        //     break;
+    case Menu::MenuState::Credits:
+        this->menu.renderCredits(*this->window, this->regularFont);
+        break;
     }
-
-    // render items
 
     // display frame in window
     this->window->display();

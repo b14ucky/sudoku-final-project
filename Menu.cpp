@@ -35,6 +35,9 @@ void Menu::initText()
 
     this->howToPlayInfoText.setCharacterSize(20);
     this->howToPlayInfoText.setFillColor(sf::Color(200, 200, 200));
+
+    this->creditsInfoText.setCharacterSize(20);
+    this->creditsInfoText.setFillColor(sf::Color(200, 200, 200));
 }
 
 // constructors / destructors
@@ -140,10 +143,38 @@ void Menu::updateHowToPlay(sf::Vector2f mousePosView)
     }
 }
 
+void Menu::updateCredits(sf::Vector2f mousePosView)
+{
+    if (this->goBackText.getGlobalBounds().contains(mousePosView))
+    {
+        this->goBackText.setScale(1.1f, 1.1f);
+    }
+    else
+    {
+        this->goBackText.setScale(1.f, 1.f);
+    }
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    {
+        if (this->mouseHeld == false)
+        {
+            this->mouseHeld = true;
+
+            if (this->currentState == MenuState::Credits)
+            {
+                this->currentState = MenuState::MainMenu;
+            }
+        }
+    }
+    else
+    {
+        this->mouseHeld = false;
+    }
+}
+
 void Menu::renderMainMenu(sf::RenderWindow &window, sf::Font &font)
 {
-    titleText.setFont(font);
-    this->titleText.setString("Sudoku Game");
+    this->titleText.setFont(font);
+    this->titleText.setString("Sudoku");
     this->titleText.setPosition(275 - this->titleText.getGlobalBounds().width / 2, 100);
 
     playGameText.setFont(font);
@@ -169,22 +200,48 @@ void Menu::renderHowToPlay(sf::RenderWindow &window, sf::Font &font)
 {
     this->titleText.setPosition(275 - this->titleText.getGlobalBounds().width / 2, 100);
     this->titleText.setString("How To Play");
-    titleText.setFont(font);
+    this->titleText.setFont(font);
 
-    this->howToPlayInfoText.setPosition(275 - this->howToPlayInfoText.getGlobalBounds().width / 2, 200);
+    this->howToPlayInfoText.setPosition(275 - this->howToPlayInfoText.getGlobalBounds().width / 2, 250);
     this->howToPlayInfoText.setFont(font);
 
     std::stringstream howToPlayInfo;
-    howToPlayInfo << "1. Each row, column and 3x3 box must contain all numbers from 1 to 9" << std::endl
-                  << "2. Each row, column and 3x3 box must contain unique numbers" << std::endl
-                  << "3. You can't update non empty field" << std::endl
-                  << "4. You can't update field with invalid value" << std::endl;
+    howToPlayInfo << "1. Each row, column and 3x3 box\nmust contain all numbers from 1 to 9." << std::endl
+                  << "2. Each row, column and 3x3 box\nmust contain unique numbers." << std::endl
+                  << "3. You can't update non empty field." << std::endl
+                  << "4. You can't update field with invalid value." << std::endl
+                  << "5. There's always only one solution." << std::endl
+                  << "6. You lose if you make 3 mistakes\nor if your game takes longer than 1 hour." << std::endl;
     this->howToPlayInfoText.setString(howToPlayInfo.str());
 
     this->goBackText.setFont(font);
-    this->goBackText.setPosition(275 - this->goBackText.getGlobalBounds().width / 2, 500);
+    this->goBackText.setPosition(275 - this->goBackText.getGlobalBounds().width / 2, 650);
 
     window.draw(this->titleText);
     window.draw(this->howToPlayInfoText);
+    window.draw(this->goBackText);
+}
+
+void Menu::renderCredits(sf::RenderWindow &window, sf::Font &font)
+{
+    this->titleText.setPosition(275 - this->titleText.getGlobalBounds().width / 2, 100);
+    this->titleText.setString("Credits");
+    this->titleText.setFont(font);
+
+    std::stringstream creditsInfo;
+    creditsInfo << "Credits:" << std::endl
+                << "Author: Dominik Meisner" << std::endl
+                << "GitHub: https://github.com/b14ucky/sudoku-final-project" << std::endl
+                << "Version: 1.0.0";
+
+    this->creditsInfoText.setString(creditsInfo.str());
+    this->creditsInfoText.setPosition(275 - this->creditsInfoText.getGlobalBounds().width / 2, 250);
+    this->creditsInfoText.setFont(font);
+
+    this->goBackText.setFont(font);
+    this->goBackText.setPosition(275 - this->goBackText.getGlobalBounds().width / 2, 650);
+
+    window.draw(this->titleText);
+    window.draw(this->creditsInfoText);
     window.draw(this->goBackText);
 }
