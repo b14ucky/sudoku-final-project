@@ -157,3 +157,8 @@ bool Board::isFilled()
     }
     return true;
 }
+
+int Board::getFieldValue(int row, int column)
+{
+    return this->grid[row][column];
+}
