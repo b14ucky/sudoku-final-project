@@ -23,12 +23,12 @@ This project is the final assignment for the programming laboratories at the Sil
 
 ### Compilation
 
+- This game uses SFML library for graphical interface so you need to install it first. You can find the installation guide [here](https://www.sfml-dev.org/tutorials/2.6/).
+
 - Clone the repository:
 ```bash
 git clone https://github.com/b14ucky/sudoku-final-project.git
 ```
-
-- This game uses SFML library for graphical interface so you need to install it first. You can find the installation guide [here](https://www.sfml-dev.org/tutorials/2.6/).
 
 - If you're using G++ compiler, you can compile the game using the following commands:
 ```bash
