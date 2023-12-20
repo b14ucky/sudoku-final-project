@@ -168,6 +168,8 @@ void Game::updateEvents()
             this->window->close();
             break;
         case sf::Event::TextEntered:
+            if (this->menu.currentState != Menu::MenuState::PlayGame)
+                break;
             if (this->selectedRow != -1 && this->selectedColumn != -1 && event.text.unicode >= '1' && event.text.unicode <= '9')
             {
                 int value = event.text.unicode - '0';
@@ -184,6 +186,78 @@ void Game::updateEvents()
             if (this->board.isFilled())
             {
                 this->endGame = true;
+            }
+            break;
+        case sf::Event::KeyPressed:
+            if (this->menu.currentState != Menu::MenuState::PlayGame)
+                break;
+            if (this->event.key.code == sf::Keyboard::Up)
+            {
+                if (this->selectedRow == -1 && this->selectedColumn == -1)
+                {
+                    this->selectedRow = 0;
+                    this->selectedColumn = 0;
+                }
+                else
+                {
+                    this->selectedRow -= 1;
+                    if (this->selectedRow < 0 || this->selectedRow > 8)
+                    {
+                        this->selectedRow = -1;
+                        this->selectedColumn = -1;
+                    }
+                }
+            }
+            if (this->event.key.code == sf::Keyboard::Down)
+            {
+                if (this->selectedRow == -1 && this->selectedColumn == -1)
+                {
+                    this->selectedRow = 0;
+                    this->selectedColumn = 0;
+                }
+                else
+                {
+                    this->selectedRow += 1;
+                    if (this->selectedRow < 0 || this->selectedRow > 8)
+                    {
+                        this->selectedRow = -1;
+                        this->selectedColumn = -1;
+                    }
+                }
+            }
+            if (this->event.key.code == sf::Keyboard::Left)
+            {
+                if (this->selectedRow == -1 && this->selectedColumn == -1)
+                {
+                    this->selectedRow = 0;
+                    this->selectedColumn = 0;
+                }
+                else
+                {
+                    this->selectedColumn -= 1;
+                    if (this->selectedColumn < 0 || this->selectedColumn > 8)
+                    {
+                        this->selectedRow = -1;
+                        this->selectedColumn = -1;
+                    }
+                }
+            }
+            if (this->event.key.code == sf::Keyboard::Right)
+            {
+                if (this->selectedRow == -1 && this->selectedColumn == -1)
+                {
+                    this->selectedRow = 0;
+                    this->selectedColumn = 0;
+                }
+                else
+                {
+                    this->selectedColumn += 1;
+                    if (this->selectedColumn < 0 || this->selectedColumn > 8)
+                    {
+                        this->selectedRow = -1;
+                        this->selectedColumn = -1;
+                    }
+                }
             }
             break;
         }
@@ -237,17 +311,21 @@ void Game::updateCells()
         for (int j = 0; j < this->gridSize; j++)
         {
             int currentCell = i * this->gridSize + j;
-            if ((i == this->selectedRow && j == this->selectedColumn) || (this->board.getFieldValue(i, j) != 0 && this->board.getFieldValue(i, j) == this->board.getFieldValue(this->selectedRow, this->selectedColumn)))
+            if (i == this->selectedRow && j == this->selectedColumn)
+            {
+                this->cells[currentCell].setFillColor(sf::Color(150, 150, 150, 128));
+            }
+            else if (this->board.getFieldValue(i, j) != 0 && this->board.getFieldValue(i, j) == this->board.getFieldValue(this->selectedRow, this->selectedColumn))
             {
                 this->cells[currentCell].setFillColor(sf::Color(200, 200, 200, 128));
             }
             else if (i == this->selectedRow)
             {
-                this->cells[currentCell].setFillColor(sf::Color(235, 235, 235, 128));
+                this->cells[currentCell].setFillColor(sf::Color(225, 225, 225, 128));
             }
             else if (j == this->selectedColumn)
             {
-                this->cells[currentCell].setFillColor(sf::Color(235, 235, 235, 128));
+                this->cells[currentCell].setFillColor(sf::Color(225, 225, 225, 128));
             }
             else
             {
