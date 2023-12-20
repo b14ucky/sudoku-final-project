@@ -11,17 +11,17 @@
 
 ## Overview
 
-This project is the final assignment for the programming laboratories at the Silesian University of Technology. It implements a Sudoku game in C++, providing a playable interface with features like a game menu, playability enhancements, and comprehensive testing.
+This project is the final assignment for the programming laboratories at the Silesian University of Technology. It implements a Sudoku game in C++, providing a playable interface with features like a game menu and playability enhancements.
 
 ## Features
 
 -   **Game Menu:** Introduces a menu for players to navigate and make choices.
--   **Playability Enhancements:** Various improvements have been made to enhance the overall playability of the Sudoku game.
--   **Testing:** Comprehensive tests validate the functionality of the Sudoku game, ensuring reliable and correct behavior.
+-   **Playablbe Interface:** Game features graphical interface to enhance the overall playability of the Sudoku game.
 
 ## Getting Started
 
 ### Installation
 
-- Go to **Releases**, select the latest release and download its source code along with sudoku.exe.
-- Extract .zip file and place sudoku.exe and assets in the same directory.
+- Go to **Releases**, select the latest release and download sudoku.zip.
+- Extract .zip file and make sure that sudoku.exe and assets are the same directory.
+- Enjoy the game.
