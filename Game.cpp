@@ -191,6 +191,8 @@ void Game::updateEvents()
         case sf::Event::KeyPressed:
             if (this->menu.currentState != Menu::MenuState::PlayGame)
                 break;
+            if (this->madeMistake)
+                this->madeMistake = false;
             if (this->event.key.code == sf::Keyboard::Up)
             {
                 if (this->selectedRow == -1 && this->selectedColumn == -1)
