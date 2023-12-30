@@ -50,6 +50,8 @@ private:
     sf::Text playAgainText;
     sf::Text mainMenuText;
     sf::Text goBackText;
+    sf::Text remainingNumberText;
+    std::vector<sf::Text> remainingNumbers;
 
     // game objects
     std::vector<sf::RectangleShape> cells;
@@ -99,6 +101,7 @@ public:
     void updateCells();
     void updateText();
     void updateEndGameMenu();
+    void updateRemainingNumbers();
     void update();
 
     void render();
@@ -106,4 +109,5 @@ public:
     void renderBackground();
     void renderGridLines();
     void renderEndGameMenu();
+    void renderRemainingNumbers();
 };

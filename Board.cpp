@@ -162,3 +162,22 @@ int Board::getFieldValue(int row, int column)
 {
     return this->grid[row][column];
 }
+
+bool Board::numberFinished(int number)
+{
+    int occurences = 0;
+    for (int i = 0; i < 9; i++)
+    {
+        for (int j = 0; j < 9; j++)
+        {
+            if (this->grid[i][j] == number)
+            {
+                occurences += 1;
+            }
+        }
+    }
+    if (occurences == 9)
+        return true;
+    else
+        return false;
+}

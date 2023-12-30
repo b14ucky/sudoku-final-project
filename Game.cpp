@@ -93,6 +93,17 @@ void Game::initText()
     this->goBackText.setOrigin(goBackText.getLocalBounds().width / 2.f, goBackText.getLocalBounds().height / 2.f);
     this->goBackText.setPosition(275, 750);
     this->goBackText.setFillColor(sf::Color(200, 200, 200));
+
+    this->remainingNumberText.setFont(this->regularFont);
+    this->remainingNumberText.setCharacterSize(32);
+    this->remainingNumberText.setFillColor(sf::Color(200, 200, 200));
+
+    for (int i = 0; i < 9; i++)
+    {
+        this->remainingNumberText.setString(std::to_string(i + 1));
+        this->remainingNumberText.setPosition(50 + i * 50 + 17.5, 650);
+        this->remainingNumbers.push_back(remainingNumberText);
+    }
 }
 
 void Game::initIcon()
@@ -419,6 +430,21 @@ void Game::updateEndGameMenu()
     }
 }
 
+void Game::updateRemainingNumbers()
+{
+    for (size_t i = 0; i < 9; i++)
+    {
+        if (this->board.numberFinished(i + 1))
+        {
+            this->remainingNumbers[i].setString(" ");
+        }
+        else
+        {
+            this->remainingNumbers[i].setString(std::to_string(i + 1));
+        }
+    }
+}
+
 // render functions
 void Game::renderText()
 {
@@ -463,6 +489,14 @@ void Game::renderEndGameMenu()
     this->window->draw(this->mainMenuText);
 }
 
+void Game::renderRemainingNumbers()
+{
+    for (auto &remainingNumber : this->remainingNumbers)
+    {
+        this->window->draw(remainingNumber);
+    }
+}
+
 // main functions
 
 void Game::update()
@@ -483,6 +517,8 @@ void Game::update()
             this->updateSelectedCell();
 
             this->updateCells();
+
+            this->updateRemainingNumbers();
 
             this->updateText();
         }
@@ -530,6 +566,8 @@ void Game::render()
         this->renderGridLines();
 
         this->renderText();
+
+        this->renderRemainingNumbers();
 
         if (this->getEndGame())
         {

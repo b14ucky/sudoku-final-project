@@ -26,4 +26,5 @@ public:
     bool updateBoard(int row, int column, int value);
     bool isFilled();
     int getFieldValue(int row, int column);
+    bool numberFinished(int number);
 };
