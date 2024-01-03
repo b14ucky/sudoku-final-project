@@ -272,7 +272,7 @@ void Menu::renderCredits(sf::RenderWindow &window, sf::Font &font)
     creditsInfo << "Credits:" << std::endl
                 << "Author: Dominik Meisner" << std::endl
                 << "GitHub: https://github.com/b14ucky/sudoku-final-project" << std::endl
-                << "Version: 1.0.0";
+                << "Version: 1.1.0";
 
     this->creditsInfoText.setString(creditsInfo.str());
     this->creditsInfoText.setPosition(275 - this->creditsInfoText.getGlobalBounds().width / 2, 250);

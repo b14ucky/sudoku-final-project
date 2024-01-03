@@ -17,7 +17,7 @@ This project is the final assignment for the programming laboratories at the Sil
 ## Features
 
 -   **Game Menu:** Introduces a menu for players to navigate and make choices.
--   **Playablbe Interface:** Game features graphical interface to enhance the overall playability of the Sudoku game.
+-   **Playable Interface:** Game features graphical interface to enhance the overall playability of the Sudoku game.
 
 ## Getting Started
 
