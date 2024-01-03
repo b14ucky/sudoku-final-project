@@ -3,6 +3,9 @@
 // private functions
 void Menu::initVariables()
 {
+    /*
+        Initialize the variables. Set the current menu state to MainMenu.
+    */
     this->currentState = MenuState::MainMenu;
 
     this->mouseHeld = false;
@@ -10,6 +13,9 @@ void Menu::initVariables()
 
 void Menu::initText()
 {
+    /*
+        Initialize the text. Set the string, size and color.
+    */
     this->titleText.setCharacterSize(72);
     this->titleText.setFillColor(sf::Color(200, 200, 200));
 
@@ -43,6 +49,10 @@ void Menu::initText()
 // constructors / destructors
 Menu::Menu()
 {
+    /*
+        Constructor of the Menu class.
+        It initializes the variables and text.
+    */
     this->initVariables();
     this->initText();
 }
@@ -50,6 +60,11 @@ Menu::Menu()
 // functions
 void Menu::updateMainMenu(sf::Vector2f mousePosView)
 {
+    /*
+        Update the main menu. If the mouse is on the text, scale the text. If the mouse is pressed on the text,
+        change the current menu state.
+        @param mousePosView: the mouse position on the window
+    */
     if (this->playGameText.getGlobalBounds().contains(mousePosView))
     {
         this->playGameText.setScale(1.1f, 1.1f);
@@ -117,6 +132,11 @@ void Menu::updateMainMenu(sf::Vector2f mousePosView)
 
 void Menu::updateHowToPlay(sf::Vector2f mousePosView)
 {
+    /*
+        Update the how to play menu. If the mouse is on the text, scale the text. If the mouse is pressed on the text,
+        change the current menu state.
+        @param mousePosView: the mouse position on the window
+    */
     if (this->goBackText.getGlobalBounds().contains(mousePosView))
     {
         this->goBackText.setScale(1.1f, 1.1f);
@@ -145,6 +165,11 @@ void Menu::updateHowToPlay(sf::Vector2f mousePosView)
 
 void Menu::updateCredits(sf::Vector2f mousePosView)
 {
+    /*
+        Update the credits menu. If the mouse is on the text, scale the text. If the mouse is pressed on the text,
+        change the current menu state.
+        @param mousePosView: the mouse position on the window
+    */
     if (this->goBackText.getGlobalBounds().contains(mousePosView))
     {
         this->goBackText.setScale(1.1f, 1.1f);
@@ -173,6 +198,11 @@ void Menu::updateCredits(sf::Vector2f mousePosView)
 
 void Menu::renderMainMenu(sf::RenderWindow &window, sf::Font &font)
 {
+    /*
+        Render the main menu on the window.
+        @param window: the window to render the main menu on
+        @param font: the font to use for the text
+    */
     this->titleText.setFont(font);
     this->titleText.setString("Sudoku");
     this->titleText.setPosition(275 - this->titleText.getGlobalBounds().width / 2, 100);
@@ -198,6 +228,11 @@ void Menu::renderMainMenu(sf::RenderWindow &window, sf::Font &font)
 
 void Menu::renderHowToPlay(sf::RenderWindow &window, sf::Font &font)
 {
+    /*
+        Render the how to play menu on the window.
+        @param window: the window to render the how to play menu on
+        @param font: the font to use for the text
+    */
     this->titleText.setPosition(275 - this->titleText.getGlobalBounds().width / 2, 100);
     this->titleText.setString("How To Play");
     this->titleText.setFont(font);
@@ -224,6 +259,11 @@ void Menu::renderHowToPlay(sf::RenderWindow &window, sf::Font &font)
 
 void Menu::renderCredits(sf::RenderWindow &window, sf::Font &font)
 {
+    /*
+        Render the credits menu on the window.
+        @param window: the window to render the credits menu on
+        @param font: the font to use for the text
+    */
     this->titleText.setPosition(275 - this->titleText.getGlobalBounds().width / 2, 100);
     this->titleText.setString("Credits");
     this->titleText.setFont(font);
