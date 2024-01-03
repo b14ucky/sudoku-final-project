@@ -44,5 +44,5 @@ g++ *.o -o sudoku -LC:/dev/SFML-2.6.1/lib -lsfml-graphics-s -lsfml-window-s -lsf
 ### Installation
 
 - Go to **Releases**, select the latest release and download sudoku.zip.
-- Extract .zip file and make sure that sudoku.exe and assets are the same directory.
+- Extract .zip file and make sure that sudoku.exe and assets are in the same directory.
 - Enjoy the game.
