@@ -36,7 +36,8 @@ g++ -c *.cpp -IC:\dev\SFML-2.6.1\include -DSFML_STATIC
 
 windres resource.rc -O coff -o resource.o
 
-g++ *.o -o sudoku -LC:/dev/SFML-2.6.1/lib -lsfml-graphics-s -lsfml-window-s -lsfml-system-s -lopengl32 -lfreetype -lwinmm -lgdi32 -mwindows
+g++ *.o -o sudoku -LC:/dev/SFML-2.6.1/lib -lsfml-graphics-s -lsfml-window-s -lsfml-system-s -lopengl32 -lfreetype -lwinmm -lgdi32 -static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lpthread -Wl,-Bdynamic -mwindows
+
 
 .\sudoku.exe
 ```
